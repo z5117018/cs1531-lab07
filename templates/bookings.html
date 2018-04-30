@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block body %}
 <h1>All Bookings</h1>
+<ul>
+{% for booking in bookings %}
+<li>{{booking}}</li>
+{% endfor %}
+</ul>
 {% endblock %}
 

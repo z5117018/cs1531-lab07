@@ -1,9 +1,14 @@
 from flask import render_template, request, redirect, url_for, abort
-from flask_login import current_user, login_required, login_user, logout_user
+from flask_login import current_user, login_required, login_user, logout_user, LoginManager
 from server import app, system
 from datetime import datetime
 from src.Location import Location
+from src.Customer import *
+from src.CarRentalSystem import *
 
+crs = CarRentalSystem()
+c = Customer('user','pass','lic')
+system.new_customer(c)
 
 @app.route('/')
 def home():
@@ -15,6 +20,15 @@ def login():
     """
     Task 1: complete this function
     """
+    if (request.method == 'POST'):
+        username = request.form.get('username','')
+        password = request.form.get('password','')
+        user = system.validate_login(username,password)
+        if user:
+            login_user(user)
+            return redirect(url_for('home'))
+        else:
+            return render_template('login.html')
     return render_template('login.html')
 
 
@@ -31,9 +45,14 @@ def page_not_found(e=None):
     return render_template('404.html'), 404
 
 
-@app.route('/cars')
+@app.route('/cars',methods=['POST','GET'])
 @login_required
 def cars():
+    if request.method == 'POST':
+        make = request.form['make']
+        model = request.form['model']
+        c = system.car_search(make,model)
+        return render_template('cars.html',cars = c)
     """
     Task 2: At the moment this endpoint does not do anything if a search
     is sent. It should filter the cars depending on the search criteria
@@ -81,6 +100,9 @@ def book(rego):
 @app.route('/cars/<rego>/bookings')
 @login_required
 def car_bookings(rego):
+    car = system.get_car(rego)
+    bookings = car.get_bookings()
+    return render_template('bookings.html', bookings = bookings)
     """
     Task 3: This should render a new template that shows a list of all
     the bookings associated with the car represented by 'rego'

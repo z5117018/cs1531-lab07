@@ -8,6 +8,21 @@ class CarRentalSystem:
         self._bookings = []
 
     def car_search(self, name=None, model=None):
+        cars = []
+        print (name)
+        for c in self._cars:
+            if (name != '' and model != ''):
+                if (c.get_name() == name and c.get_model() == model):
+                    cars.append(c)
+            elif (name != '' and model == ''):
+                if (c.get_name() == name):
+                    cars.append(c)
+            elif (name == '' and model != ''):
+                if (c.get_model() == model):
+                    cars.append(c)
+            else:
+                return self._cars
+        return cars
         """
         You will have to implement this method for Task 2
         """
