@@ -48,15 +48,15 @@ def page_not_found(e=None):
 @app.route('/cars',methods=['POST','GET'])
 @login_required
 def cars():
+    """
+    Task 2: At the moment this endpoint does not do anything if a search
+    is sent. It should filter the cars depending on the search criteria
+    """
     if request.method == 'POST':
         make = request.form['make']
         model = request.form['model']
         c = system.car_search(make,model)
         return render_template('cars.html',cars = c)
-    """
-    Task 2: At the moment this endpoint does not do anything if a search
-    is sent. It should filter the cars depending on the search criteria
-    """
     cars = system.cars # This line is deleted in the model solution
     return render_template('cars.html', cars=cars)
 
@@ -100,12 +100,13 @@ def book(rego):
 @app.route('/cars/<rego>/bookings')
 @login_required
 def car_bookings(rego):
-    car = system.get_car(rego)
-    bookings = car.get_bookings()
-    return render_template('bookings.html', bookings = bookings)
     """
     Task 3: This should render a new template that shows a list of all
     the bookings associated with the car represented by 'rego'
     The bookings.html template is intended for this route
     """
+    car = system.get_car(rego)
+    bookings = car.get_bookings()
+    return render_template('bookings.html', bookings = bookings)
+
     pass

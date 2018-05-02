@@ -20,13 +20,11 @@ class CarRentalSystem:
             elif (name == '' and model != ''):
                 if (c.get_model() == model):
                     cars.append(c)
-            else:
-                return self._cars
+
         return cars
         """
         You will have to implement this method for Task 2
         """
-        pass
 
     def make_booking(self, customer, period, car, location):
         new_booking = Booking(customer, period, car, location)

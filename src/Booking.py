@@ -16,4 +16,4 @@ class Booking(object):
         return self._location
 
     def __str__(self):
-        return "Booking for: {}, {}".format(self._customer, self._car)
+        return "Booking for: {}, {} for period {}".format(self._customer, self._car)
